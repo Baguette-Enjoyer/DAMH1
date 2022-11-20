@@ -60,6 +60,7 @@ public class Dictionary {
                     return;
                 }
             }
+            System.out.println("Slang not found");
         } else
             System.out.println(resultF);
     }
@@ -79,7 +80,33 @@ public class Dictionary {
 
     public static void addSlangWord() {
         Scanner sc = new Scanner(System.in);
+        String slangToAdd = new String();
+        System.out.println("New Slang: ");
+        slangToAdd = sc.nextLine();
+        System.out.println("Definition: ");
+        String def = sc.nextLine();
+        String s;
+        if ((s = map.get(slangToAdd)) != null) {
+            // neu trung
+            System.out.println("Slang already exist !!!");
+            System.out.println("Overwrite / Duplicate (1/2) ");
+            String choice = sc.nextLine();
+            if (choice.equals("1")) {
 
+            } else if (choice.equals("2")) {
+
+            }
+        } else {
+            try {
+                BufferedWriter bw = new BufferedWriter(new FileWriter("slang.txt", true));
+
+                map.put(slangToAdd, def);
+                bw.write('\n' + slangToAdd + '`' + def);
+                bw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void main(String[] arg) {

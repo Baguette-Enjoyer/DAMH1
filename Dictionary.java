@@ -170,6 +170,66 @@ public class Dictionary {
         }
     }
 
+    public static void deleteSlang() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter slang to delete: ");
+        String slangToDel = sc.nextLine();
+        if ((map.get(slangToDel)) != null) {
+            System.out.println("Confirm (Y/N)");
+            String choice = sc.nextLine();
+            if (choice.equals("N")) {
+                return;
+            } else {
+                try {
+                    map.remove(slangToDel);
+                    BufferedReader br = new BufferedReader(new FileReader("slang.txt"));
+                    StringBuffer sb = new StringBuffer();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        if (line.split("`")[0].equals(slangToDel)) {
+                            continue;
+                        }
+                        sb.append(line);
+                        sb.append('\n');
+                    }
+                    br.close();
+                    String toS = sb.toString();
+                    BufferedWriter bw = new BufferedWriter(new FileWriter("slang.txt"));
+                    bw.write(toS);
+                    bw.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            System.out.println("Slang Not Found ");
+            return;
+        }
+    }
+
+    public static void resetDictionary() {
+        try {
+            map.clear();
+            BufferedReader br = new BufferedReader(new FileReader("orgSlang.txt"));
+            StringBuffer sb = new StringBuffer();
+            String t;
+            while ((t = br.readLine()) != null) {
+                String[] line = t.split("`");
+                map.put(line[0], line[1]);
+                sb.append(t);
+                sb.append('\n');
+            }
+            br.close();
+            String toS = sb.toString();
+            BufferedWriter bw = new BufferedWriter(new FileWriter("slang.txt"));
+            bw.write(toS);
+            bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] arg) {
         // findSlang();
         // findDef();
@@ -186,6 +246,10 @@ public class Dictionary {
                 addSlangWord();
             } else if (choice.equals("5")) {
                 editSlangWord();
+            } else if (choice.equals("6")) {
+                deleteSlang();
+            } else if (choice.equals("7")) {
+                resetDictionary();
             } else {
                 sc.close();
                 break;

@@ -92,20 +92,81 @@ public class Dictionary {
             System.out.println("Overwrite / Duplicate (1/2) ");
             String choice = sc.nextLine();
             if (choice.equals("1")) {
+                map.put(slangToAdd, def);
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader("slang.txt"));
+                    StringBuffer sb = new StringBuffer();
+                    String t;
+                    while ((t = br.readLine()) != null) {
+                        if (t.split("`")[0].equals(slangToAdd)) {
+                            sb.append(slangToAdd + '`' + def);
+                            sb.append('\n');
+                            continue;
+                        }
+                        sb.append(t);
+                        sb.append('\n');
+                    }
+                    br.close();
+                    String toS = sb.toString();
+                    BufferedWriter bw = new BufferedWriter(new FileWriter("slang.txt"));
+                    bw.write(toS);
+                    bw.close();
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else if (choice.equals("2")) {
-
+                return;
             }
         } else {
             try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter("slang.txt", true));
 
                 map.put(slangToAdd, def);
-                bw.write('\n' + slangToAdd + '`' + def);
+                bw.write(slangToAdd + '`' + def + '\n');
                 bw.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void editSlangWord() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Edit slang: ");
+        String slangToEdit = sc.nextLine();
+        if ((map.get(slangToEdit)) != null) {
+            System.out.println("Edit to: ");
+            String newSlang = sc.nextLine();
+            String t = map.get(slangToEdit);
+            map.remove(slangToEdit);
+            map.put(newSlang, t);
+            try {
+                BufferedReader br = new BufferedReader(new FileReader("slang.txt"));
+                StringBuffer sb = new StringBuffer();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (line.split("`")[0].equals(slangToEdit)) {
+                        line = newSlang + "`" + line.split("`")[1];
+                        sb.append(line);
+                        sb.append('\n');
+                        continue;
+                    }
+                    sb.append(line);
+                    sb.append('\n');
+                }
+                br.close();
+                String toS = sb.toString();
+                BufferedWriter bw = new BufferedWriter(new FileWriter("slang.txt"));
+                bw.write(toS);
+                bw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            System.out.println("Slang Not Found ");
+            return;
         }
     }
 
@@ -121,6 +182,10 @@ public class Dictionary {
                 findDef();
             } else if (choice.equals("3")) {
                 showSearchedSlang();
+            } else if (choice.equals("4")) {
+                addSlangWord();
+            } else if (choice.equals("5")) {
+                editSlangWord();
             } else {
                 sc.close();
                 break;

@@ -49,20 +49,12 @@ public class Dictionary {
         Scanner sc = new Scanner(System.in);
         String slang = new String();
         slang = sc.nextLine();
+        slangSearched.add(slang);
         String resultF = map.get(slang);
-        if (resultF == null) {
-            String result = new String();
-            for (String i : map.keySet()) {
-                if (i.toLowerCase().equals(slang)) {
-                    result = slang;
-                    slangSearched.add(slang);
-                    System.out.println(map.get(i));
-                    return;
-                }
-            }
-            System.out.println("Slang not found");
-        } else
+        if (resultF != null) {
             System.out.println(resultF);
+        } else
+            System.out.println("Slang not found");
     }
 
     public static void findDef() {
@@ -230,6 +222,15 @@ public class Dictionary {
         }
     }
 
+    public static void randomSlang() {
+        Random generator = new Random();
+        Object[] values = map.keySet().toArray();// tham khao
+                                                 // https://stackoverflow.com/questions/929554/is-there-a-way-to-get-the-value-of-a-hashmap-randomly-in-java
+        int t = generator.nextInt(values.length);
+        String randomValue = values[t].toString() + ": " + map.get(values[t]);
+        System.out.println(randomValue);
+    }
+
     public static void main(String[] arg) {
         // findSlang();
         // findDef();
@@ -250,6 +251,8 @@ public class Dictionary {
                 deleteSlang();
             } else if (choice.equals("7")) {
                 resetDictionary();
+            } else if (choice.equals("8")) {
+                randomSlang();
             } else {
                 sc.close();
                 break;

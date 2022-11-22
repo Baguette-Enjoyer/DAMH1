@@ -1,7 +1,6 @@
 import java.io.*;
-import java.util.HashMap;
-import java.awt.*;
-import javax.swing.*;
+// import java.awt.*;
+// import javax.swing.*;
 import java.util.*;
 
 public class Dictionary {
@@ -231,6 +230,74 @@ public class Dictionary {
         System.out.println(randomValue);
     }
 
+    public static void randomSlangQuiz() {
+        Random generator = new Random();
+        // To Array Dictionary
+        Object[] values = map.keySet().toArray();
+        //
+        int quest = generator.nextInt(values.length);
+        String ansr = map.get(values[quest]);
+        ArrayList<Integer> list = new ArrayList<Integer>();// prevent same
+        ArrayList<String> dummyAnsr = new ArrayList<String>();
+        System.out.print("Slang: " + values[quest].toString() + '\n');
+        list.add(quest);
+        String answer[] = ansr.split("\\| ");
+        dummyAnsr.add(answer[generator.nextInt(answer.length)]);
+        int loop = 0;
+        while (loop < 3) {
+            int key = generator.nextInt(values.length);
+            for (int i : list) {
+                if (key == i) {
+                    break;
+                } else {
+                    list.add(key);
+                    String ans = map.get(values[key]);
+                    String[] anStr = ans.split("\\| ");
+                    if (anStr.length == 1) {
+                        dummyAnsr.add(ans);
+                        loop++;
+                        break;
+                    } else {
+                        dummyAnsr.add(anStr[generator.nextInt(anStr.length)]);
+                        loop++;
+                        break;
+                    }
+                }
+            }
+        }
+        loop = 0;
+        Collections.shuffle(dummyAnsr);
+        for (String i : dummyAnsr) {
+            System.out.println(Integer.toString(++loop) + " " + i);
+        }
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Choose Answer: ");
+        String decision = sc.nextLine();
+        if (!decision.equals("1") && !decision.equals("2") && !decision.equals("3") && !decision.equals("4")) {
+            System.out.println("Wrong");
+        } else {
+            loop = 1;
+
+            for (String i : dummyAnsr) {
+                String l = Integer.toString(loop);
+                if (!l.equals(decision)) {
+                    loop++;
+                    continue;
+                }
+                if (l.equals(decision) && !i.equals(ansr)) {
+                    System.out.println("Wrong");
+                    return;
+                }
+                if (l.equals(decision) && ansr.contains(i)) {
+                    System.out.println("TRUE");
+                    return;
+                }
+
+            }
+        }
+        // System.out.println(dummyAnsr);
+    }
+
     public static void main(String[] arg) {
         // findSlang();
         // findDef();
@@ -253,6 +320,8 @@ public class Dictionary {
                 resetDictionary();
             } else if (choice.equals("8")) {
                 randomSlang();
+            } else if (choice.equals("9")) {
+                randomSlangQuiz();
             } else {
                 sc.close();
                 break;

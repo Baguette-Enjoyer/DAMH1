@@ -241,7 +241,7 @@ public class Dictionary {
         ArrayList<String> dummyAnsr = new ArrayList<String>();
         System.out.print("Slang: " + values[quest].toString() + '\n');
         list.add(quest);
-        String answer[] = ansr.split("\\| ");
+        String answer[] = ansr.split("\\|\\s");
         dummyAnsr.add(answer[generator.nextInt(answer.length)]);
         int loop = 0;
         while (loop < 3) {
@@ -252,7 +252,7 @@ public class Dictionary {
                 } else {
                     list.add(key);
                     String ans = map.get(values[key]);
-                    String[] anStr = ans.split("\\| ");
+                    String[] anStr = ans.split("\\|\\s");
                     if (anStr.length == 1) {
                         dummyAnsr.add(ans);
                         loop++;
@@ -298,11 +298,29 @@ public class Dictionary {
         // System.out.println(dummyAnsr);
     }
 
+    public static void randomDefinitionQuiz() {
+        Random generator = new Random();
+        // To Array Dictionary
+        Object[] values = map.keySet().toArray();
+    }
+
     public static void main(String[] arg) {
         // findSlang();
         // findDef();
         Scanner sc = new Scanner(System.in);
         while (true) {
+            System.out.print('\n');
+            System.out.println("1. Find Slangs ");
+            System.out.println("2. Find Definitions ");
+            System.out.println("3. Show Slangs Searched ");
+            System.out.println("4. Add Slang ");
+            System.out.println("5. Edit Slang ");
+            System.out.println("6. Delete Slang ");
+            System.out.println("7. Reset Dictionary ");
+            System.out.println("8. Random Slang ");
+            System.out.println("9. Random Slang Quiz ");
+
+            System.out.println("Choose: ");
             String choice = sc.nextLine();
             if (choice.equals("1")) {
                 findSlang();

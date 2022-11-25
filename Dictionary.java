@@ -362,6 +362,59 @@ public class Dictionary {
         Random generator = new Random();
         // To Array Dictionary
         Object[] values = map.keySet().toArray();
+        int quest = generator.nextInt(values.length);
+        String answer = values[quest].toString();
+        // System.out.println(answer);
+        String question = map.get(answer);
+        String[] q2 = question.split("\\|\\s");
+        System.out.println("Definition: " + q2[generator.nextInt(q2.length)]);
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        list.add(quest);
+        ArrayList<String> listAnsr = new ArrayList<String>();
+        listAnsr.add(answer);
+        for (int i = 0; i < 3;) {
+            int key = generator.nextInt(values.length);
+            String ans = values[key].toString();
+            for (int j : list) {
+                if (j == key) {
+                    break;
+                } else {
+                    listAnsr.add(ans);
+                    i++;
+                }
+            }
+        }
+        Collections.shuffle(listAnsr);
+        int loop = 0;
+        for (String i : listAnsr) {
+            System.out.println(Integer.toString(++loop) + ". " + i);
+        }
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Choose Answer: ");
+        String decision = sc.nextLine();
+        if (!decision.equals("1") && !decision.equals("2") && !decision.equals("3") && !decision.equals("4")) {
+            System.out.println("Wrong choice");
+        } else {
+            loop = 1;
+
+            for (String i : listAnsr) {
+                String l = Integer.toString(loop);
+                if (!l.equals(decision)) {
+                    loop++;
+                    continue;
+                }
+                if (l.equals(decision) && !i.equals(answer)) {
+                    System.out.println("Wrong");
+                    return;
+                }
+                if (l.equals(decision) && answer.equals(i)) {
+                    System.out.println("TRUE");
+                    return;
+                }
+
+            }
+        }
+
     }
 
     public static void main(String[] arg) {
@@ -379,6 +432,7 @@ public class Dictionary {
             System.out.println("7. Reset Dictionary ");
             System.out.println("8. Random Slang ");
             System.out.println("9. Random Slang Quiz ");
+            System.out.println("10. Random Definition Quiz ");
 
             System.out.println("Choose: ");
             String choice = sc.nextLine();
@@ -400,6 +454,8 @@ public class Dictionary {
                 randomSlang();
             } else if (choice.equals("9")) {
                 randomSlangQuiz();
+            } else if (choice.equals("10")) {
+                randomDefinitionQuiz();
             } else {
                 sc.close();
                 break;

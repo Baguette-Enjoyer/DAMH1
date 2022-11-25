@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class Dictionary {
-    public static ArrayList<String> slangSearched = new ArrayList<String>();
+    // public static ArrayList<String> slangSearched = new ArrayList<String>();
     // public static ArrayList<String> definitionSearched = new ArrayList<String>();
 
     public static HashMap<String, String> handleFile() {
@@ -35,11 +35,47 @@ public class Dictionary {
         return dictionary;
     }
 
-    public static void showSearchedSlang() {
-        for (String i : slangSearched) {
-            System.out.print(i + " ");
+    public static ArrayList<String> getSearchedSlang() {
+        ArrayList<String> arr = new ArrayList<String>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("history.txt"));
+            String t = new String();
+            // int num = 1;
+            try {
+                // handle line in slang.txt
+                while (((t = br.readLine()) != null)) {
+                    String[] splittedLine = t.split("`");
+                    arr.add(splittedLine[0] + ": " + splittedLine[1]);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println('\n');
+        return arr;
+    }
+
+    public static ArrayList<String> slangSearched = getSearchedSlang();
+
+    public static void showSearchedSlang() {
+        System.out.println("Slang searched: ");
+        for (String i : slangSearched) {
+            System.out.println(i);
+        }
+    }
+
+    public static void addToSearchedSlang(String line) {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("history.txt", true));
+            bw.write(line + '\n');
+            bw.close();
+            String[] lineSplitted = line.split("`");
+            slangSearched.add(lineSplitted[0] + ": " + lineSplitted[1]);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static HashMap<String, String> map = handleFile();
@@ -48,12 +84,15 @@ public class Dictionary {
         Scanner sc = new Scanner(System.in);
         String slang = new String();
         slang = sc.nextLine();
-        slangSearched.add(slang);
         String resultF = map.get(slang);
+
         if (resultF != null) {
+            addToSearchedSlang(slang + "`" + resultF);
             System.out.println(resultF);
-        } else
+        } else {
             System.out.println("Slang not found");
+            addToSearchedSlang(slang + "`" + "Not Found");
+        }
     }
 
     public static void findDef() {
@@ -107,7 +146,28 @@ public class Dictionary {
                     e.printStackTrace();
                 }
             } else if (choice.equals("2")) {
-                return;
+                try {
+                    String newS = map.get(slangToAdd) + "| " + def;
+                    map.put(slangToAdd, newS);
+                    BufferedReader br = new BufferedReader(new FileReader("slang.txt"));
+                    StringBuffer sb = new StringBuffer();
+                    String t;
+                    while ((t = br.readLine()) != null) {
+                        if (t.split("`")[0].equals(slangToAdd)) {
+                            t += "| " + def;
+                        }
+                        sb.append(t);
+                        sb.append('\n');
+                    }
+                    br.close();
+                    String toS = sb.toString();
+                    BufferedWriter bw = new BufferedWriter(new FileWriter("slang.txt"));
+                    bw.write(toS);
+                    bw.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             try {

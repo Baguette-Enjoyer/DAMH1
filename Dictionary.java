@@ -85,13 +85,7 @@ public class Dictionary {
         System.out.println("Find Slang: ");
         String slang = new String();
         slang = sc.nextLine();
-        String resultF = map.get(slang);
-        if (map.get(slang) == null) {
-            resultF = map.get(slang.toLowerCase());
-            if (resultF == null) {
-                resultF = map.get(slang.toUpperCase());
-            }
-        }
+        String resultF = map.get(slang.toUpperCase());
         if (resultF != null) {
             addToSearchedSlang(slang + "`" + resultF);
             System.out.print(slang + ": ");
@@ -124,21 +118,21 @@ public class Dictionary {
         System.out.println("Definition: ");
         String def = sc.nextLine();
         String s;
-        if ((s = map.get(slangToAdd)) != null || (s = map.get(slangToAdd.toLowerCase())) != null
-                || (s = map.get(slangToAdd.toUpperCase())) != null) {
+        slangToAdd = slangToAdd.toUpperCase();
+        if ((s = map.get(slangToAdd)) != null) {
             // neu trung
             System.out.println("Slang already exist !!!");
             System.out.println("Overwrite / Duplicate (1/2) ");
             String choice = sc.nextLine();
             if (choice.equals("1")) {
-                map.put(slangToAdd, def);
+                map.put(slangToAdd.toUpperCase(), def);
                 try {
                     BufferedReader br = new BufferedReader(new FileReader("slang.txt"));
                     StringBuffer sb = new StringBuffer();
                     String t;
                     while ((t = br.readLine()) != null) {
                         if (t.split("`")[0].equals(slangToAdd)) {
-                            sb.append(slangToAdd + '`' + def);
+                            sb.append(slangToAdd.toUpperCase() + '`' + def);
                             sb.append('\n');
                             continue;
                         }
@@ -196,20 +190,20 @@ public class Dictionary {
         System.out.println("Edit slang: ");
         String slangToEdit = sc.nextLine();
         String s;
-        if ((s = map.get(slangToEdit)) != null || (s = map.get(slangToEdit.toLowerCase())) != null
-                || (s = map.get(slangToEdit.toUpperCase())) != null) {
+        slangToEdit = slangToEdit.toUpperCase();
+        if ((s = map.get(slangToEdit)) != null) {
             System.out.println("Edit to: ");
             String newSlang = sc.nextLine();
             String t = map.get(slangToEdit);
             map.remove(slangToEdit);
-            map.put(newSlang, t);
+            map.put(newSlang.toUpperCase(), t);
             try {
                 BufferedReader br = new BufferedReader(new FileReader("slang.txt"));
                 StringBuffer sb = new StringBuffer();
                 String line;
                 while ((line = br.readLine()) != null) {
                     if (line.split("`")[0].equals(slangToEdit)) {
-                        line = newSlang + "`" + line.split("`")[1];
+                        line = newSlang.toUpperCase() + "`" + line.split("`")[1];
                         sb.append(line);
                         sb.append('\n');
                         continue;
@@ -237,20 +231,21 @@ public class Dictionary {
         System.out.println("Enter slang to delete: ");
         String slangToDel = sc.nextLine();
         String s;
-        if ((s = map.get(slangToDel)) != null || (s = map.get(slangToDel.toLowerCase())) != null
-                || (s = map.get(slangToDel.toUpperCase())) != null) {
+        slangToDel = slangToDel.toUpperCase();
+        if ((s = map.get(slangToDel)) != null) {
             System.out.println("Confirm (Y/N)");
             String choice = sc.nextLine();
             if (choice.equals("N")) {
                 return;
             } else {
                 try {
-                    map.remove(slangToDel);
+
                     BufferedReader br = new BufferedReader(new FileReader("slang.txt"));
                     StringBuffer sb = new StringBuffer();
                     String line;
                     while ((line = br.readLine()) != null) {
                         if (line.split("`")[0].equals(slangToDel)) {
+                            map.remove(line.split("`")[0]);
                             continue;
                         }
                         sb.append(line);
@@ -341,13 +336,13 @@ public class Dictionary {
         loop = 0;
         Collections.shuffle(dummyAnsr);
         for (String i : dummyAnsr) {
-            System.out.println(Integer.toString(++loop) + " " + i);
+            System.out.println(Integer.toString(++loop) + "." + i);
         }
         Scanner sc = new Scanner(System.in);
         System.out.println("Choose Answer: ");
         String decision = sc.nextLine();
         if (!decision.equals("1") && !decision.equals("2") && !decision.equals("3") && !decision.equals("4")) {
-            System.out.println("Wrong");
+            System.out.println("Wrong choice");
         } else {
             loop = 1;
 

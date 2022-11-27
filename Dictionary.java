@@ -82,13 +82,21 @@ public class Dictionary {
 
     public static void findSlang() {
         Scanner sc = new Scanner(System.in);
+        System.out.println("Find Slang: ");
         String slang = new String();
         slang = sc.nextLine();
         String resultF = map.get(slang);
-
+        if (map.get(slang) == null) {
+            resultF = map.get(slang.toLowerCase());
+            if (resultF == null) {
+                resultF = map.get(slang.toUpperCase());
+            }
+        }
         if (resultF != null) {
             addToSearchedSlang(slang + "`" + resultF);
+            System.out.print(slang + ": ");
             System.out.println(resultF);
+
         } else {
             System.out.println("Slang not found");
             addToSearchedSlang(slang + "`" + "Not Found");
@@ -116,7 +124,8 @@ public class Dictionary {
         System.out.println("Definition: ");
         String def = sc.nextLine();
         String s;
-        if ((s = map.get(slangToAdd)) != null) {
+        if ((s = map.get(slangToAdd)) != null || (s = map.get(slangToAdd.toLowerCase())) != null
+                || (s = map.get(slangToAdd.toUpperCase())) != null) {
             // neu trung
             System.out.println("Slang already exist !!!");
             System.out.println("Overwrite / Duplicate (1/2) ");
@@ -186,7 +195,9 @@ public class Dictionary {
         Scanner sc = new Scanner(System.in);
         System.out.println("Edit slang: ");
         String slangToEdit = sc.nextLine();
-        if ((map.get(slangToEdit)) != null) {
+        String s;
+        if ((s = map.get(slangToEdit)) != null || (s = map.get(slangToEdit.toLowerCase())) != null
+                || (s = map.get(slangToEdit.toUpperCase())) != null) {
             System.out.println("Edit to: ");
             String newSlang = sc.nextLine();
             String t = map.get(slangToEdit);
@@ -225,7 +236,9 @@ public class Dictionary {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter slang to delete: ");
         String slangToDel = sc.nextLine();
-        if ((map.get(slangToDel)) != null) {
+        String s;
+        if ((s = map.get(slangToDel)) != null || (s = map.get(slangToDel.toLowerCase())) != null
+                || (s = map.get(slangToDel.toUpperCase())) != null) {
             System.out.println("Confirm (Y/N)");
             String choice = sc.nextLine();
             if (choice.equals("N")) {
@@ -349,7 +362,7 @@ public class Dictionary {
                     return;
                 }
                 if (l.equals(decision) && ansr.contains(i)) {
-                    System.out.println("TRUE");
+                    System.out.println("TRUE!! CONGRATULATION ");
                     return;
                 }
 
@@ -408,7 +421,7 @@ public class Dictionary {
                     return;
                 }
                 if (l.equals(decision) && answer.equals(i)) {
-                    System.out.println("TRUE");
+                    System.out.println("TRUE!! CONGRATULATION ");
                     return;
                 }
 

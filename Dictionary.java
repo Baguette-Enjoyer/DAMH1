@@ -1,12 +1,7 @@
 import java.io.*;
-// import java.awt.*;
-// import javax.swing.*;
 import java.util.*;
 
 public class Dictionary {
-    // public static ArrayList<String> slangSearched = new ArrayList<String>();
-    // public static ArrayList<String> definitionSearched = new ArrayList<String>();
-
     public static HashMap<String, String> handleFile() {
         HashMap<String, String> dictionary = new HashMap<String, String>();
         try {
@@ -99,14 +94,22 @@ public class Dictionary {
 
     public static void findDef() {
         Scanner sc = new Scanner(System.in);
+        System.out.println("Find Definition: ");
         String definition = new String();
         definition = sc.nextLine();
         // if (result != null)
         // System.out.println(result);
+        Boolean flag = false;
         for (String i : map.keySet()) {
             if (map.get(i).contains(definition)) {
                 System.out.println(i);
+                flag = true;
             }
+        }
+        if (flag == true) {
+            return;
+        } else if (flag == false) {
+            System.out.println("None Slang Found");
         }
     }
 
@@ -469,6 +472,5 @@ public class Dictionary {
                 break;
             }
         }
-        showSearchedSlang();
     }
 }
